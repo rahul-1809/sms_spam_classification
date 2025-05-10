@@ -2,11 +2,15 @@
 
 ## Overview
 
-This project implements an SMS Spam Classifier to distinguish between 'ham' (non-spam) and 'spam' messages using machine learning techniques. It includes preprocessing, feature engineering, model training and evaluation, hyperparameter tuning, and a Streamlit-based user interface for easy interaction.
+This project implements an SMS Spam Classifier to distinguish between 'ham' (non-spam) and 'spam' messages using machine learning techniques. It includes preprocessing, feature engineering, model training and evaluation, SMOTE + Tomek links for class imbalance handling, hyperparameter tuning, and a Streamlit-based user interface for easy interaction.
+
+**Live Demo:** [sms-spam-classifier](https://sms-spam-classification-ml.streamlit.app/)
 
 ## Table of Contents
 
 * [Overview](#overview)
+* [Live Demo](#live-demo)
+* [Cloning Instructions](#cloning-instructions)
 * [Dependencies](#dependencies)
 * [Dataset](#dataset)
 * [Steps](#steps)
@@ -17,11 +21,34 @@ This project implements an SMS Spam Classifier to distinguish between 'ham' (non
   * [4. Text Preprocessing](#4-text-preprocessing)
   * [5. Feature Extraction](#5-feature-extraction)
   * [6. Data Splitting](#6-data-splitting)
-  * [7. Model Training and Evaluation](#7-model-training-and-evaluation)
-  * [8. Hyperparameter Tuning](#8-hyperparameter-tuning)
-  * [9. Model Comparison and ROC Curve](#9-model-comparison-and-roc-curve)
-  * [10. Model Saving](#10-model-saving)
+  * [7. Handling Class Imbalance: SMOTE + Tomek Links](#7-handling-class-imbalance-smote--tomek-links)
+  * [8. Model Training and Evaluation](#8-model-training-and-evaluation)
+  * [9. Hyperparameter Tuning](#9-hyperparameter-tuning)
+  * [10. Model Comparison and ROC Curve](#10-model-comparison-and-roc-curve)
+  * [11. Model Saving](#11-model-saving)
 * [Streamlit Interface](#streamlit-interface)
+* [Contributing](#contributing)
+
+## Live Demo
+
+Check out the deployed app:
+[sms-spam-classifier](https://sms-spam-classification-ml.streamlit.app/)
+
+## Cloning Instructions
+
+To clone and run the project locally:
+
+```bash
+git clone https://github.com/rahul-1809/sms_spam_classification.git
+cd sms_spam_classification
+pip install -r requirements.txt
+```
+
+To launch the Streamlit app:
+
+```bash
+streamlit run app.py
+```
 
 ## Dependencies
 
@@ -34,11 +61,12 @@ This project implements an SMS Spam Classifier to distinguish between 'ham' (non
 * string
 * xgboost
 * joblib
+* imbalanced-learn
 
-Install dependencies:
+Install all dependencies:
 
 ```bash
-pip install pandas numpy matplotlib seaborn scikit-learn nltk xgboost joblib
+pip install pandas numpy matplotlib seaborn scikit-learn nltk xgboost joblib imbalanced-learn
 ```
 
 Download NLTK resources:
@@ -99,7 +127,13 @@ The dataset (`spam.csv`) contains SMS messages labeled as 'ham' or 'spam'. It is
 
 * Split data using `train_test_split` (70% train, 30% test).
 
-### 7. Model Training and Evaluation
+### 7. Handling Class Imbalance: SMOTE + Tomek Links
+
+* Import `SMOTETomek` from `imblearn.combine`.
+* Apply SMOTE + Tomek on training data to handle class imbalance.
+* Resample `X_train` and `y_train` before model training.
+
+### 8. Model Training and Evaluation
 
 * Train multiple classifiers:
 
@@ -113,7 +147,7 @@ The dataset (`spam.csv`) contains SMS messages labeled as 'ham' or 'spam'. It is
   * XGBoost
 * Evaluate using accuracy, precision, recall, F1 score.
 
-### 8. Hyperparameter Tuning
+### 9. Hyperparameter Tuning
 
 * Define hyperparameter grids.
 * Use `RandomizedSearchCV` for:
@@ -125,19 +159,20 @@ The dataset (`spam.csv`) contains SMS messages labeled as 'ham' or 'spam'. It is
   * Bernoulli NB
 * Print best parameters and scores.
 
-### 9. Model Comparison and ROC Curve
+### 10. Model Comparison and ROC Curve
 
-* Select top models (e.g., Logistic Regression, Random Forest, Multinomial NB, AdaBoost).
+* Select top models (Random Forest, Multinomial NB, Bernoulli NB).
 * Plot ROC curves and calculate AUC for comparison.
 
-### 10. Model Saving
+### 11. Model Saving
 
-* Save trained models and `CountVectorizer` using `joblib.dump()`.
+* Save top trained models and `CountVectorizer` using `joblib.dump()`.
 
 ## Streamlit Interface
 
-A simple and interactive user interface has been built using **Streamlit** to allow users to input SMS messages and receive classification results in real time.
+A simple and interactive user interface has been built using Streamlit to allow users to input SMS messages and receive classification results in real time.
 
----
+## Contributing
 
-For any enhancements or issues, feel free to fork or raise a pull request.
+Contributions are welcome.
+Feel free to fork the repo, create a branch, and open a pull request to improve the project.
